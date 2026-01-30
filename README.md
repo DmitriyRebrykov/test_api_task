@@ -43,7 +43,7 @@ The project includes:
 
 ```bash
 git clone <repository_url>
-cd test_task_api
+cd test_api_task
 ```
 
 ---
