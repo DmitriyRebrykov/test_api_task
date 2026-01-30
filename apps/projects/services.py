@@ -8,7 +8,7 @@ class ArtInstituteAPIError(Exception):
 
 class ArtInstituteService:
     BASE_URL = "https://api.artic.edu/api/v1"
-    CACHE_TIMEOUT = 3600  # 1 hour
+    CACHE_TIMEOUT = 3600
 
     @classmethod
     def get_artwork(cls, artwork_id: int) -> Optional[Dict[str, Any]]:
@@ -35,8 +35,8 @@ class ArtInstituteService:
 
             return artwork_data
 
-        except requests.exceptions.RequestException as e:
-            raise ArtInstituteAPIError(f"Failed to fetch artwork: {str(e)}")
+        except requests.exceptions.RequestException as exp:
+            raise ArtInstituteAPIError(f"Failed to fetch artwork: {str(exp)}")
 
     @classmethod
     def validate_artwork_exists(cls, artwork_id: int) -> bool:
@@ -47,7 +47,7 @@ class ArtInstituteService:
             return False
 
     @classmethod
-    def search_artworks(cls, query: str, limit: int = 10) -> Dict[str, Any]:
+    def search_artworks(cls, query: str, limit: int = 10):
         try:
             url = f"{cls.BASE_URL}/artworks/search"
             params = {
@@ -59,12 +59,11 @@ class ArtInstituteService:
             response.raise_for_status()
 
             return response.json()
-
-        except requests.exceptions.RequestException as e:
-            raise ArtInstituteAPIError(f"Failed to search artworks: {str(e)}")
+        except requests.exceptions.RequestException as exp:
+            raise ArtInstituteAPIError(f"Failed to search artworks: {str(exp)}")
 
     @classmethod
-    def extract_place_data(cls, artwork_data: Dict[str, Any]) -> Dict[str, Any]:
+    def extract_place_data(cls, artwork_data: Dict[str, Any]):
         return {
             'external_id': artwork_data.get('id'),
             'title': artwork_data.get('title', 'Unknown'),
